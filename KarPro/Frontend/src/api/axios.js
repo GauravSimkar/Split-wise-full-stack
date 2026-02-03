@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://split-wise-full-stack-z7nq-bd8ki7guf-gaurav-simkars-projects.vercel.app/api"
 });
 
 api.interceptors.request.use((config) => {
