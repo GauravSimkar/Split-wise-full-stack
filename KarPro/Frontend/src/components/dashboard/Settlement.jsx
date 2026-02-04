@@ -18,7 +18,7 @@ const Settlement = () => {
     explainSettlementAI({ settlements })
       .then((res) => setExplanation(res.data.explanation))
       .catch(() =>
-        setExplanation("Could not generate settlement explanation.")
+        setExplanation("Could not generate settlement explanation, AI limit exceeded.")
       )
       .finally(() => setLoading(false));
   }, [settlements]);
