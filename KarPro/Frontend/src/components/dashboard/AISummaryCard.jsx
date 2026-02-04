@@ -18,7 +18,7 @@ const AISummaryCard = () => {
     })
       .then((res) => setAiSummary(res.data.summary))
       .catch(() =>
-        setAiSummary("Could not generate AI summary right now.")
+        setAiSummary("Could not generate AI summary right now, AI limit exceeded.")
       )
       .finally(() => setLoading(false));
   }, [summary]);
