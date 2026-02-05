@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGroup } from "../../context/GroupContext";
 import { getAISummary } from "../../api/aiApi";
 
@@ -7,10 +7,11 @@ const AISummaryCard = () => {
   const [aiSummary, setAiSummary] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const handleGenerateSummary = () => {
     if (!summary) return;
 
     setLoading(true);
+    setAiSummary("");
 
     getAISummary({
       totalSpent: summary.totalSpent,
@@ -18,24 +19,21 @@ const AISummaryCard = () => {
     })
       .then((res) => setAiSummary(res.data.summary))
       .catch(() =>
-        setAiSummary("Could not generate AI summary right now, AI limit exceeded.")
+        setAiSummary("Could not generate AI summary right now.")
       )
       .finally(() => setLoading(false));
-  }, [summary]);
+  };
 
   return (
-    <div
-      className="relative overflow-hidden rounded-2xl
-                 border border-white/10
-                 bg-white/5 backdrop-blur-md
-                 px-6 py-5"
-    >
-      {/* Soft gradient glow */}
+    <div className="relative overflow-hidden rounded-2xl
+                    border border-white/10
+                    bg-white/5 backdrop-blur-md
+                    px-6 py-5">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/10 to-transparent opacity-60" />
 
       <div className="relative">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-4">
           <div className="flex h-9 w-9 items-center justify-center rounded-full
                           bg-indigo-500/20 text-indigo-400">
             🧠
@@ -45,16 +43,23 @@ const AISummaryCard = () => {
           </h3>
         </div>
 
+        {/* Button */}
+        <button
+          onClick={handleGenerateSummary}
+          disabled={loading}
+          className="mb-3 rounded-lg bg-indigo-500/20
+                     px-4 py-2 text-sm font-medium text-indigo-300
+                     hover:bg-indigo-500/30 disabled:opacity-50"
+        >
+          {loading ? "Generating..." : "Generate Summary"}
+        </button>
+
         {/* Content */}
-        {loading ? (
-          <p className="text-sm italic text-gray-400 animate-pulse">
-            Thinking like a human accountant…
-          </p>
-        ) : (
-          <p className="text-sm italic leading-relaxed text-gray-300">
-            {aiSummary || "No summary available yet."}
-          </p>
-        )}
+        <p className="text-sm italic leading-relaxed text-gray-300">
+          {loading
+            ? "Thinking like a human accountant…"
+            : aiSummary || "Click the button to generate AI summary."}
+        </p>
       </div>
     </div>
   );
